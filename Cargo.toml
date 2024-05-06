@@ -1,0 +1,19 @@
+## Copyright (C) 2024, Savio Sena <savio.sena@gmail.com>
+
+[package]
+name = "leetcode"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+readme = "README.md"
+description = "My solutions to various Leetcode puzzles."
+homepage = "https://github.com/sav/leetcode"
+repository = "git@github.com:sav/leetcode.git"
+keywords = ["leetcode", "algorithm", "data-structure", "competitive"]
+
+[lib]
+name = "leetcode"
+path = "src/lib/leetcode.rs"
+
+[dependencies]
+alg = { git = "https://github.com/sav/alg.git", branch = "master" }
