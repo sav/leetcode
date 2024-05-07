@@ -33,9 +33,29 @@ impl<T: BufRead> LineRead for T {
     }
 }
 
+pub struct Vector<T: FromStr>(pub Vec<T>);
+
+impl<T: FromStr> FromStr for Vector<T> {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let s = s.trim().trim_start_matches('[').trim_end_matches(']');
+        if s.len() == 0 {
+            let v = vec![];
+            return Ok(Vector(v));
+        }
+        let result: Result<Vec<T>, _> = s.split(',').map(|x| x.trim().parse::<T>()).collect();
+        match result {
+            Ok(vec) => Ok(Vector(vec)),
+            Err(_) => Err("Failed to parse integers".to_string()),
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::error::Error;
     use std::io::Cursor;
 
     #[test]
@@ -89,5 +109,26 @@ mod tests {
         cursor.skip_line();
         cursor.skip_line();
         cursor.skip_line();
+    }
+
+    #[test]
+    fn test_vector_fromstr() -> Result<(), Box<dyn Error>> {
+        let input = "[]";
+        let Vector(v) = input.parse::<Vector<i32>>()?;
+        assert_eq!(v, vec![]);
+
+        let input = "  [ 1, 2,  3,  4,   5 ]  ";
+        let Vector(v) = input.parse::<Vector<i32>>()?;
+        assert_eq!(v, vec![1, 2, 3, 4, 5]);
+
+        let input = "  [ -1, 2,  -3,  4,   5 ]  ";
+        let Vector(v) = input.parse::<Vector<i32>>()?;
+        assert_eq!(v, vec![-1, 2, -3, 4, 5]);
+
+        let input = "  [ -1.0, 2,  -3,  4,   5.0 ]  ";
+        let Vector(v) = input.parse::<Vector<f64>>()?;
+        assert_eq!(v, vec![-1.0, 2.0, -3.0, 4.0, 5.0]);
+
+        Ok(())
     }
 }
