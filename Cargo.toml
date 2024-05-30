@@ -11,9 +11,20 @@ homepage = "https://github.com/sav/leetcode"
 repository = "git@github.com:sav/leetcode.git"
 keywords = ["leetcode", "algorithm", "data-structure", "competitive"]
 
+[profile.dev]
+opt-level = 0
+debug = true
+debug-assertions = true
+panic = 'unwind'
+
 [lib]
 name = "leetcode"
 path = "src/lib/leetcode.rs"
 
+[features]
+count-allocations = ["allocation-counter"]
+
 [dependencies]
 alg = { git = "https://github.com/sav/alg.git", branch = "master" }
+allocation-counter = { version = "0", optional = true }
+
