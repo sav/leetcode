@@ -33,6 +33,7 @@ impl<T: BufRead> LineRead for T {
     }
 }
 
+#[derive(Debug)]
 pub struct Vector<T: FromStr>(pub Vec<T>);
 
 impl<T: FromStr> FromStr for Vector<T> {
