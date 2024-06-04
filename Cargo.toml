@@ -27,4 +27,4 @@ count-allocations = ["allocation-counter"]
 [dependencies]
 alg = { git = "https://github.com/sav/alg.git", branch = "master" }
 allocation-counter = { version = "0", optional = true }
-
+rand = "0.8"
