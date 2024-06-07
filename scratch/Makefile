@@ -6,7 +6,12 @@
 
 LEETCODE_GO := leetcode.go
 
-all: valid-palindrome is-subsequence
+LEETCODE_GO_BINS := \
+	valid-palindrome \
+	is-subsequence \
+	two-sum-ii-input-array-is-sorted
+
+all: $(LEETCODE_GO_BINS)
 
 valid-palindrome: valid-palindrome.go $(LEETCODE_GO)
 	@go build valid-palindrome.go $(LEETCODE_GO)
@@ -14,8 +19,11 @@ valid-palindrome: valid-palindrome.go $(LEETCODE_GO)
 is-subsequence: is-subsequence.go $(LEETCODE_GO)
 	@go build is-subsequence.go $(LEETCODE_GO)
 
+two-sum-ii-input-array-is-sorted: two-sum-ii-input-array-is-sorted.go $(LEETCODE_GO)
+	@go build two-sum-ii-input-array-is-sorted.go $(LEETCODE_GO)
+
 .PHONY: clean
 clean:
-	@rm -f valid-palindrome
+	@rm -f $(LEETCODE_GO_BINS)
 
 # end
