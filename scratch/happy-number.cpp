@@ -1,4 +1,4 @@
-#include <cctype> // for std::isdigit
+#include <cctype>
 #include <iostream>
 #include <map>
 #include <sstream>

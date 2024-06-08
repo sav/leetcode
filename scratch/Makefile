@@ -21,15 +21,18 @@ LEETCODE_GO_BINS := \
 	isomorphic-strings \
 	word-pattern
 
+LEETCODE_CPP := leetcode.hpp
+
 LEETCODE_CPP_BINS := \
-	happy-number
+	happy-number \
+	2sum
 
 all: $(LEETCODE_GO_BINS) $(LEETCODE_CPP_BINS) 
 
 $(LEETCODE_GO_BINS): %: %.go $(LEETCODE_GO)
 	$(GO) build $@.go $(LEETCODE_GO)
 
-$(LEETCODE_CPP_BINS): %: %.cpp
+$(LEETCODE_CPP_BINS): %: %.cpp $(LEETCODE_CPP)
 	$(CPP) $(CXXFLAGS) -o $@ $@.cpp
 
 .PHONY: clean
