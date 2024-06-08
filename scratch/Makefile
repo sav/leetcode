@@ -12,7 +12,10 @@ LEETCODE_GO_BINS := \
 	valid-palindrome \
 	is-subsequence \
 	two-sum-ii-input-array-is-sorted \
-	3sum
+	3sum \
+	ransom-note \
+	isomorphic-strings \
+	word-pattern
 
 all: $(LEETCODE_GO_BINS) 
 
