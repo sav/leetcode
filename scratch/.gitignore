@@ -2,8 +2,14 @@
 .idea
 *.log
 tmp/
-
 a.out
+
 valid-palindrome
 is-subsequence
 two-sum-ii-input-array-is-sorted
+3sum
+ransom-note
+isomorphic-strings
+word-pattern
+
+happy-number
