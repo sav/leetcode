@@ -4,26 +4,23 @@
 # @file scrap/Makefile
 # @version 0.1
 
+GO := go
+
 LEETCODE_GO := leetcode.go
 
 LEETCODE_GO_BINS := \
 	valid-palindrome \
 	is-subsequence \
-	two-sum-ii-input-array-is-sorted
+	two-sum-ii-input-array-is-sorted \
+	3sum
 
-all: $(LEETCODE_GO_BINS)
+all: $(LEETCODE_GO_BINS) 
 
-valid-palindrome: valid-palindrome.go $(LEETCODE_GO)
-	@go build valid-palindrome.go $(LEETCODE_GO)
-
-is-subsequence: is-subsequence.go $(LEETCODE_GO)
-	@go build is-subsequence.go $(LEETCODE_GO)
-
-two-sum-ii-input-array-is-sorted: two-sum-ii-input-array-is-sorted.go $(LEETCODE_GO)
-	@go build two-sum-ii-input-array-is-sorted.go $(LEETCODE_GO)
+$(LEETCODE_GO_BINS): %: %.go $(LEETCODE_GO)
+	$(GO) build $@.go $(LEETCODE_GO)
 
 .PHONY: clean
 clean:
-	@rm -f $(LEETCODE_GO_BINS)
+	rm -f $(LEETCODE_GO_BINS)
 
 # end
