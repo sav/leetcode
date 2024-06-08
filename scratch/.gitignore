@@ -3,6 +3,7 @@
 *.log
 tmp/
 
+a.out
 valid-palindrome
 is-subsequence
 two-sum-ii-input-array-is-sorted
