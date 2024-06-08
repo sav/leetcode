@@ -25,7 +25,8 @@ LEETCODE_CPP := leetcode.hpp
 
 LEETCODE_CPP_BINS := \
 	happy-number \
-	2sum
+	2sum \
+	contains-duplicate-ii
 
 all: $(LEETCODE_GO_BINS) $(LEETCODE_CPP_BINS) 
 
