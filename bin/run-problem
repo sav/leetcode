@@ -29,7 +29,7 @@ run_problem() {
 
     printf "running: %s < %s\n" "$problem_name" "$(basename $input_file)" >&2
 
-    cargo build --bin $problem_name &&
+    cargo build -q --bin $problem_name &&
         ./target/debug/$problem_name < $input_file |
             tee $output_file
 }
