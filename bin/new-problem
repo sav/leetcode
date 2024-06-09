@@ -1,0 +1,66 @@
+#!/bin/sh
+# bin/new-problem, My solutions to various Leetcode puzzles.
+# Copyright (C) 2024, Savio Sena <savio.sena@gmail.com>
+#
+# Create the necessary files to work on a new problem.
+
+target_dir=src/bin
+
+if [ ! -d "./$target_dir" ]; then
+   printf "error: you must run this script from the root of the repository.\n" >&2
+   exit 2
+ fi
+
+if [ $# -ne 2 ]; then
+   printf "Usage: %s <problem-name> <problem-id>\n" "$(basename $0)" >&2
+   exit 1
+fi
+
+problem_name="$1"
+
+problem_id="$2"
+
+problem_title=$(echo "$problem_name" | sed 's/-/ /g' |
+    awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) tolower(substr($i,2))}1')
+
+problem_function=$(echo "$problem_name" | sed 's/-/_/g')
+
+problem_file="$target_dir/$problem_name.rs"
+
+if [ -f "$problem_file" ]; then
+  printf "error: file already exists: %s\n" "$problem_file" >&2
+  exit 3
+fi
+
+cat <<EOF>> $problem_file && echo "created: ${problem_file}"
+// ${problem_name}.rs, My solutions to various Leetcode puzzles.
+// Copyright (C) 2024, Savio Sena <savio.sena@gmail.com>
+
+//! # ${problem_id}. ${problem_title}
+//!
+//!  - https://leetcode.com/problems/${problem_name}
+
+use leetcode::*;
+use std::error::Error;
+
+struct Solution;
+
+impl Solution {
+    pub fn ${problem_function}(nums: Vec<i32>) -> i32 {
+        0
+    }
+}
+
+fn main() -> Result<(), Box<dyn Error>> {
+    let mut input = std::io::stdin().lock();
+    let Vector(nums) = input.read_line_as::<Vector<i32>>()?;
+
+    let answer = Solution::${problem_function}(nums);
+    println!("{}", answer);
+
+    Ok(())
+}
+EOF
+
+mkdir -p "input/$problem_name" && echo "created: input/${problem_name}"
+mkdir -p "output/$problem_name" && echo "created: output/${problem_name}"
