@@ -7,13 +7,13 @@
 target_dir=src/bin
 
 if [ ! -d "./$target_dir" ]; then
-   printf "error: you must run this script from the root of the repository.\n" >&2
-   exit 2
- fi
+	printf "error: you must run this script from the root of the repository.\n" >&2
+	exit 2
+fi
 
 if [ $# -ne 2 ]; then
-   printf "Usage: %s <problem-name> <problem-id>\n" "$(basename $0)" >&2
-   exit 1
+	printf "Usage: %s <problem-name> <problem-id>\n" "$(basename $0)" >&2
+	exit 1
 fi
 
 problem_name="$1"
@@ -21,18 +21,18 @@ problem_name="$1"
 problem_id="$2"
 
 problem_title=$(echo "$problem_name" | sed 's/-/ /g' |
-    awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) tolower(substr($i,2))}1')
+	awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) tolower(substr($i,2))}1')
 
 problem_function=$(echo "$problem_name" | sed 's/-/_/g')
 
 problem_file="$target_dir/$problem_name.rs"
 
 if [ -f "$problem_file" ]; then
-  printf "error: file already exists: %s\n" "$problem_file" >&2
-  exit 3
+	printf "error: file already exists: %s\n" "$problem_file" >&2
+	exit 3
 fi
 
-cat <<EOF>> $problem_file && echo "created: ${problem_file}"
+cat <<EOF >>$problem_file && echo "created: ${problem_file}"
 // ${problem_name}.rs, My solutions to various Leetcode puzzles.
 // Copyright (C) 2024, Savio Sena <savio.sena@gmail.com>
 
