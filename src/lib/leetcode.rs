@@ -41,7 +41,7 @@ impl<T: FromStr> FromStr for Vector<T> {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let s = s.trim().trim_start_matches('[').trim_end_matches(']');
-        if s.len() == 0 {
+        if s.is_empty() {
             let v = vec![];
             return Ok(Vector(v));
         }
