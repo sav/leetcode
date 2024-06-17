@@ -22,7 +22,7 @@ impl Solution {
         let mut up_or_down = false;
 
         for i in 0..s.len() {
-            levels[level as usize] += s.get(i..i+1).unwrap();
+            levels[level as usize] += s.get(i..i + 1).unwrap();
 
             if i % (n - 1) == 0 {
                 up_or_down = !up_or_down;
@@ -38,8 +38,8 @@ impl Solution {
 fn main() -> Result<(), Box<dyn Error>> {
     let mut input = std::io::stdin().lock();
 
-    let s = input.read_line_as::<String>()?;
-    let n = input.read_line_as::<i32>()?;
+    let s = input.read_as::<String>()?;
+    let n = input.read_as::<i32>()?;
 
     let r = Solution::convert(s, n);
     println!("{r}");

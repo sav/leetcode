@@ -33,7 +33,7 @@ impl Solution {
 fn main() -> Result<(), Box<dyn Error>> {
     let mut input = std::io::stdin().lock();
 
-    let n = input.read_line_as::<i32>()?;
+    let n = input.read_as::<i32>()?;
 
     let s = Solution::int_to_roman(n);
     println!("{}", s);

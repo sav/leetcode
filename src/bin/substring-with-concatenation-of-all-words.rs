@@ -94,8 +94,8 @@ fn run(s: String, words: Vec<String>) {
 fn main() -> Result<(), Box<dyn Error>> {
     let mut input = std::io::stdin().lock();
 
-    let s = input.read_line_as::<String>()?;
-    let Vector(words) = input.read_line_as::<Vector<String>>()?;
+    let s = input.read_as::<String>()?;
+    let Vector(words) = input.read_as::<Vector<String>>()?;
 
     run(s, words);
 

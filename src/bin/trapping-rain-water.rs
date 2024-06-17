@@ -45,7 +45,7 @@ impl Solution {
 
 fn main() -> Result<(), Box<dyn Error>> {
     let mut input = std::io::stdin().lock();
-    let Vector(nums) = input.read_line_as::<Vector<i32>>()?;
+    let Vector(nums) = input.read_as::<Vector<i32>>()?;
 
     println!("{:?}", nums);
     let h = Solution::trap(nums);

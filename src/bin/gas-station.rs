@@ -45,8 +45,8 @@ impl Solution {
 
 fn main() -> Result<(), Box<dyn Error>> {
     let mut input = std::io::stdin().lock();
-    let Vector(gas) = input.read_line_as::<Vector<i32>>()?;
-    let Vector(cost) = input.read_line_as::<Vector<i32>>()?;
+    let Vector(gas) = input.read_as::<Vector<i32>>()?;
+    let Vector(cost) = input.read_as::<Vector<i32>>()?;
 
     // println!("{gas:?}\n{cost:?}");
     let n = Solution::can_complete_circuit(gas, cost);

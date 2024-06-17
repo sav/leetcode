@@ -44,7 +44,7 @@ impl Solution {
 fn main() -> Result<(), Box<dyn Error>> {
     let mut input = std::io::stdin().lock();
 
-    let Vector(strings) = input.read_line_as::<Vector<String>>()?;
+    let Vector(strings) = input.read_as::<Vector<String>>()?;
 
     let groups = Solution::group_anagrams(strings);
     println!("{groups:?}");

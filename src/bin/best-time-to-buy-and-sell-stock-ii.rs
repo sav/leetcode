@@ -15,9 +15,9 @@ impl Solution {
         let n = v.len();
         let mut profit = 0;
 
-        for i in 0..n-1 {
-            if v[i+1] - v[i] > 0 {
-                profit += v[i+1] - v[i]; 
+        for i in 0..n - 1 {
+            if v[i + 1] - v[i] > 0 {
+                profit += v[i + 1] - v[i];
             }
         }
 
@@ -27,7 +27,7 @@ impl Solution {
 
 fn main() -> Result<(), Box<dyn Error>> {
     let mut input = std::io::stdin().lock();
-    let Vector(prices) = input.read_line_as::<Vector<i32>>()?;
+    let Vector(prices) = input.read_as::<Vector<i32>>()?;
 
     println!("{prices:?}");
     let day = Solution::max_profit(prices);

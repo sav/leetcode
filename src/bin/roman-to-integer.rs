@@ -6,8 +6,8 @@
 //!  - https://leetcode.com/problems/roman-to-integer
 
 use leetcode::*;
-use std::error::Error;
 use std::collections::HashMap;
+use std::error::Error;
 
 struct Solution;
 
@@ -15,7 +15,7 @@ impl Solution {
     #[inline]
     fn roman_to_int_map() -> HashMap<char, i32> {
         let mut map = HashMap::new();
-        
+
         map.insert('I', 1);
         map.insert('V', 5);
         map.insert('X', 10);
@@ -26,9 +26,9 @@ impl Solution {
 
         map
     }
-    
+
     pub fn roman_to_int(s: String) -> i32 {
-        let map: HashMap<char, i32> = Solution::roman_to_int_map(); 
+        let map: HashMap<char, i32> = Solution::roman_to_int_map();
         let mut last: i32 = i32::MAX;
 
         s.chars().fold(0, |mut sum, c| {
@@ -49,7 +49,7 @@ impl Solution {
 fn main() -> Result<(), Box<dyn Error>> {
     let mut input = std::io::stdin().lock();
 
-    let s = input.read_line_as::<String>()?;
+    let s = input.read_as::<String>()?;
 
     let n = Solution::roman_to_int(s);
     println!("{}", n);

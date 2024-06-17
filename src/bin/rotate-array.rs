@@ -29,8 +29,8 @@ impl Solution {
 fn main() -> Result<(), Box<dyn Error>> {
     let mut input = std::io::stdin().lock();
 
-    let Vector(mut nums) = input.read_line_as::<Vector<i32>>()?;
-    let k: i32 = input.read_line_as()?;
+    let Vector(mut nums) = input.read_as::<Vector<i32>>()?;
+    let k: i32 = input.read_as()?;
 
     Solution::rotate(&mut nums, k);
     println!("{:?}", nums);

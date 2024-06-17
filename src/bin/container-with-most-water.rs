@@ -17,7 +17,7 @@ impl Solution {
 
         while left < right {
             let area = height[left].min(height[right]) * (right - left) as i32;
-            
+
             if area > total {
                 total = area
             }
@@ -35,7 +35,7 @@ impl Solution {
 
 fn main() -> Result<(), Box<dyn Error>> {
     let mut input = std::io::stdin().lock();
-    let Vector(height) = input.read_line_as::<Vector<i32>>()?;
+    let Vector(height) = input.read_as::<Vector<i32>>()?;
 
     let area = Solution::max_area(height);
     println!("{area}");

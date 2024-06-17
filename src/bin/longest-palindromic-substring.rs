@@ -73,7 +73,7 @@ impl Solution {
 
 fn main() -> Result<(), Box<dyn Error>> {
     let mut input = std::io::stdin().lock();
-    let s = input.read_line_as::<String>()?;
+    let s = input.read_as::<String>()?;
     let p = Solution::longest_palindrome(s.clone());
     println!("{p}");
     Ok(())

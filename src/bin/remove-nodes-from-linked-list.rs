@@ -85,7 +85,7 @@ fn run(head: Box<ListNode>) {
 fn main() -> Result<(), Box<dyn Error>> {
     let mut input = std::io::stdin().lock();
 
-    let Vector(v) = input.read_line_as::<Vector<i32>>()?;
+    let Vector(v) = input.read_as::<Vector<i32>>()?;
 
     let mut head = Box::new(ListNode::new(0));
 

@@ -44,8 +44,8 @@ impl Solution {
 fn main() -> Result<(), Box<dyn Error>> {
     let mut input = std::io::stdin().lock();
 
-    let target = input.read_line_as::<i32>()?;
-    let Vector(nums) = input.read_line_as::<Vector<i32>>()?;
+    let target = input.read_as::<i32>()?;
+    let Vector(nums) = input.read_as::<Vector<i32>>()?;
 
     let answer = Solution::min_sub_array_len(target, nums);
     println!("{}", answer);

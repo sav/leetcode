@@ -33,7 +33,7 @@ impl Solution {
 
 fn main() -> Result<(), Box<dyn Error>> {
     let mut input = std::io::stdin().lock();
-    let Vector(v) = input.read_line_as::<Vector<i32>>()?;
+    let Vector(v) = input.read_as::<Vector<i32>>()?;
 
     println!("{v:?}");
     let w = Solution::product_except_self(v);

@@ -9,24 +9,19 @@ use std::str::FromStr;
 pub trait InputReader {
     fn trimmed_lines(&mut self) -> impl Iterator<Item = String>;
 
-    fn read_line_as<T: FromStr>(&mut self) -> Result<T, T::Err>;
-
     fn skip_line(&mut self);
 
-    fn read_matrix_as<T: FromStr>(&mut self) -> Result<Vec<Vec<T>>, T::Err>;
+    fn read_as<T: FromStr>(&mut self) -> Result<T, T::Err>;
+
+    fn read_vec_of<T: FromStr>(&mut self) -> Result<Vec<T>, T::Err>;
+
+    fn read_matrix_of<T: FromStr>(&mut self) -> Result<Vec<Vec<T>>, T::Err>;
 }
 
-impl<T: BufRead> InputReader for T {
+impl<B: BufRead> InputReader for B {
     fn trimmed_lines(&mut self) -> impl Iterator<Item = String> {
         self.lines()
             .map(|l| l.expect("should read line from buffer").trim().to_string())
-    }
-
-    fn read_line_as<S: FromStr>(&mut self) -> Result<S, S::Err> {
-        let mut buffer = String::new();
-        self.read_line(&mut buffer)
-            .expect("should read line from buffer");
-        buffer.trim().to_string().parse::<S>()
     }
 
     fn skip_line(&mut self) {
@@ -34,16 +29,35 @@ impl<T: BufRead> InputReader for T {
             .expect("should read line from buffer");
     }
 
-    fn read_matrix_as<R: FromStr>(&mut self) -> Result<Vec<Vec<R>>, R::Err> {
+    fn read_as<T: FromStr>(&mut self) -> Result<T, T::Err> {
+        let mut buffer = String::new();
+        self.read_line(&mut buffer)
+            .expect("should read line from buffer");
+        buffer.trim().to_string().parse::<T>()
+    }
+
+    fn read_vec_of<T: FromStr>(&mut self) -> Result<Vec<T>, T::Err> {
+        let mut buffer = String::new();
+        self.read_line(&mut buffer)
+            .expect("should read line from buffer");
+        buffer
+            .trim_matches(|c| c == ' ' || c == '\t' || c == '[' || c == ']')
+            .split(',')
+            .map(|s| s.trim_matches(|c| c == '"' || c == ' ' || c == '\''))
+            .map(|s| s.parse::<T>())
+            .collect::<Result<Vec<T>, T::Err>>()
+    }
+
+    fn read_matrix_of<T: FromStr>(&mut self) -> Result<Vec<Vec<T>>, T::Err> {
         let mut result = Vec::new();
         for line in self.lines() {
             if let Ok(line) = line {
                 let elements = line
                     .trim_matches(|c| c == '[' || c == ']' || c == ',' || c == ' ' || c == '\t')
                     .split(',')
-                    .map(|s| s.trim_matches(|c| c == '"' || c == ' '))
-                    .map(|s| s.parse::<R>())
-                    .collect::<Result<Vec<R>, R::Err>>()?;
+                    .map(|s| s.trim_matches(|c| c == '"' || c == ' ' || c == '\''))
+                    .map(|s| s.parse::<T>())
+                    .collect::<Result<Vec<T>, T::Err>>()?;
                 result.push(elements);
             }
         }
@@ -90,22 +104,22 @@ mod tests {
     #[test]
     fn test_read_line_as() {
         let mut cursor = Cursor::new("  0  \n1 \n 2\n");
-        assert_eq!(cursor.read_line_as::<i32>(), Ok(0));
-        assert_eq!(cursor.read_line_as::<i32>(), Ok(1));
-        assert_eq!(cursor.read_line_as::<i32>(), Ok(2));
+        assert_eq!(cursor.read_as::<i32>(), Ok(0));
+        assert_eq!(cursor.read_as::<i32>(), Ok(1));
+        assert_eq!(cursor.read_as::<i32>(), Ok(2));
 
         let mut cursor = Cursor::new("  0  \n 3.1415 \n");
-        assert_eq!(cursor.read_line_as::<f64>(), Ok(0.0));
-        assert_eq!(cursor.read_line_as::<f64>(), Ok(3.1415));
+        assert_eq!(cursor.read_as::<f64>(), Ok(0.0));
+        assert_eq!(cursor.read_as::<f64>(), Ok(3.1415));
 
         let mut cursor = Cursor::new("0\n1\n 2 \n");
-        let i: Result<i32, _> = cursor.read_line_as();
+        let i: Result<i32, _> = cursor.read_as();
         assert_eq!(i, Ok(0));
 
-        let f: Result<f64, _> = cursor.read_line_as();
+        let f: Result<f64, _> = cursor.read_as();
         assert_eq!(f, Ok(1.0_f64));
 
-        let s: Result<String, _> = cursor.read_line_as();
+        let s: Result<String, _> = cursor.read_as();
         assert_eq!(s, Ok("2".to_string()));
     }
 
@@ -113,7 +127,7 @@ mod tests {
     #[should_panic]
     fn test_read_line_as_panic() {
         let mut cursor = Cursor::new("    \n  \n");
-        assert_eq!(cursor.read_line_as::<f64>(), Ok(0.0));
+        assert_eq!(cursor.read_as::<f64>(), Ok(0.0));
     }
 
     #[test]
@@ -152,9 +166,20 @@ mod tests {
     }
 
     #[test]
+    fn test_read_vec_as() {
+        let mut cursor = Cursor::new("[\"5\",\"3\"]");
+        let mat1 = cursor.read_vec_of::<i32>();
+        assert_eq!(mat1, Ok(vec![5, 3]));
+
+        let mut cursor = Cursor::new("  [ '3' , '5' ] ");
+        let mat1 = cursor.read_vec_of::<i32>();
+        assert_eq!(mat1, Ok(vec![3, 5]));
+    }
+
+    #[test]
     fn test_read_matrix_as() {
         let mut cursor = Cursor::new("[[\"5\",\"3\"]\n,[\"6\",\".\"]\n,[\".\",\"9\"]]\n");
-        let mat1 = cursor.read_matrix_as::<String>();
+        let mat1 = cursor.read_matrix_of::<String>();
         assert_eq!(
             mat1,
             Ok(vec![
@@ -165,7 +190,7 @@ mod tests {
         );
 
         let mut cursor = Cursor::new("[[\"5\",\"3\"],\n [\"6\",\".\"],\n [\".\",\"9\"]]");
-        let mat1 = cursor.read_matrix_as::<String>();
+        let mat1 = cursor.read_matrix_of::<String>();
         assert_eq!(
             mat1,
             Ok(vec![
@@ -176,7 +201,7 @@ mod tests {
         );
 
         let mut cursor = Cursor::new("\t[[\"5\",\"3\"],\n\t\t[\"6\",\".\"],\n\t\t[\".\",\"9\"]]");
-        let mat1 = cursor.read_matrix_as::<String>();
+        let mat1 = cursor.read_matrix_of::<String>();
         assert_eq!(
             mat1,
             Ok(vec![

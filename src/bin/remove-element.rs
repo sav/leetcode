@@ -26,7 +26,7 @@ impl Solution {
     pub fn remove_element(nums: &mut Vec<i32>, val: i32) -> i32 {
         let mut k = 0_i32;
         let mut p = -1_i32;
-        
+
         for i in 0..nums.len() {
             if nums[i] != val {
                 if p != -1 {
@@ -49,12 +49,12 @@ impl Solution {
 fn main() -> Result<(), Box<dyn Error>> {
     let mut input = std::io::stdin().lock();
 
-    let Vector(mut nums) = input.read_line_as::<Vector<i32>>()?;
-    let val: i32 = input.read_line_as()?;
+    let Vector(mut nums) = input.read_as::<Vector<i32>>()?;
+    let val: i32 = input.read_as()?;
 
     let result = Solution::remove_element(&mut nums, val);
 
     println!("{result}\n{nums:?}");
-    
+
     Ok(())
 }

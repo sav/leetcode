@@ -35,7 +35,7 @@ impl Solution {
 fn main() -> Result<(), Box<dyn Error>> {
     let mut input = std::io::stdin().lock();
 
-    let Vector(mut nums) = input.read_line_as::<Vector<i32>>()?;
+    let Vector(mut nums) = input.read_as::<Vector<i32>>()?;
 
     let result = Solution::remove_duplicates(&mut nums);
 

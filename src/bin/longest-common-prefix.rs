@@ -47,7 +47,7 @@ impl Solution {
 fn main() -> Result<(), Box<dyn Error>> {
     let mut input = std::io::stdin().lock();
 
-    let Vector(v) = input.read_line_as::<Vector<String>>()?;
+    let Vector(v) = input.read_as::<Vector<String>>()?;
 
     let r = Solution::longest_common_prefix(v);
     println!("{}", r);

@@ -51,11 +51,11 @@ impl Solution {
 fn main() -> Result<(), Box<dyn Error>> {
     let mut input = std::io::stdin().lock();
 
-    let Vector(mut nums1) = input.read_line_as::<Vector<i32>>()?;
-    let m: i32 = input.read_line_as()?;
+    let Vector(mut nums1) = input.read_as::<Vector<i32>>()?;
+    let m: i32 = input.read_as()?;
 
-    let Vector(mut nums2) = input.read_line_as::<Vector<i32>>()?;
-    let n: i32 = input.read_line_as()?;
+    let Vector(mut nums2) = input.read_as::<Vector<i32>>()?;
+    let n: i32 = input.read_as()?;
 
     Solution::merge(&mut nums1, m, &mut nums2, n);
 

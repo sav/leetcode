@@ -25,9 +25,10 @@ impl Solution {
             // Otherwise, discover within the range of possible destinations,
             // which one will maximize the distance traveled.
             let (ini, end) = (i + 1, (i + v[i] as usize).min(last));
-            let (offset, _) = v[ini..end+1].iter().enumerate().fold((0, 0), |acc, v| {
-                if v.0 + *v.1 as usize >= acc.1 {  // if i + v[i] >= max
-                    (v.0, v.0 + *v.1 as usize)     //    (i, i + v[i]) 
+            let (offset, _) = v[ini..end + 1].iter().enumerate().fold((0, 0), |acc, v| {
+                if v.0 + *v.1 as usize >= acc.1 {
+                    // if i + v[i] >= max
+                    (v.0, v.0 + *v.1 as usize) //    (i, i + v[i])
                 } else {
                     acc
                 }
@@ -41,7 +42,7 @@ impl Solution {
 
 fn main() -> Result<(), Box<dyn Error>> {
     let mut input = std::io::stdin().lock();
-    let Vector(nums) = input.read_line_as::<Vector<i32>>()?;
+    let Vector(nums) = input.read_as::<Vector<i32>>()?;
 
     println!("{:?}", nums);
     let result = Solution::jump(nums);

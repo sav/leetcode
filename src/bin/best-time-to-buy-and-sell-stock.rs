@@ -30,7 +30,7 @@ impl Solution {
 
 fn main() -> Result<(), Box<dyn Error>> {
     let mut input = std::io::stdin().lock();
-    let Vector(prices) = input.read_line_as::<Vector<i32>>()?;
+    let Vector(prices) = input.read_as::<Vector<i32>>()?;
 
     println!("{prices:?}");
     let day = Solution::max_profit(prices);

@@ -31,8 +31,8 @@ impl Solution {
 fn main() -> Result<(), Box<dyn Error>> {
     let mut input = std::io::stdin().lock();
 
-    let s = input.read_line_as::<String>()?;
-    let t = input.read_line_as::<String>()?;
+    let s = input.read_as::<String>()?;
+    let t = input.read_as::<String>()?;
 
     println!("{}", Solution::is_anagram(s, t));
 
