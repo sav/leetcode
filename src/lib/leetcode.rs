@@ -6,7 +6,7 @@ use std::io::{self, BufRead, Read, Stdin};
 use std::str::FromStr;
 
 /// A trait for reading lines from a buffer, providing methods for various line operations.
-pub trait LineRead {
+pub trait InputReader {
     fn trimmed_lines(&mut self) -> impl Iterator<Item = String>;
 
     fn read_line_as<T: FromStr>(&mut self) -> Result<T, T::Err>;
@@ -16,7 +16,7 @@ pub trait LineRead {
     fn read_matrix_as<T: FromStr>(&mut self) -> Result<Vec<Vec<T>>, T::Err>;
 }
 
-impl<T: BufRead> LineRead for T {
+impl<T: BufRead> InputReader for T {
     fn trimmed_lines(&mut self) -> impl Iterator<Item = String> {
         self.lines()
             .map(|l| l.expect("should read line from buffer").trim().to_string())
