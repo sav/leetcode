@@ -12,6 +12,8 @@ pub trait LineRead {
     fn read_line_as<T: FromStr>(&mut self) -> Result<T, T::Err>;
 
     fn skip_line(&mut self);
+
+    fn read_matrix_as<T: FromStr>(&mut self) -> Result<Vec<Vec<T>>, T::Err>;
 }
 
 impl<T: BufRead> LineRead for T {
@@ -30,6 +32,22 @@ impl<T: BufRead> LineRead for T {
     fn skip_line(&mut self) {
         self.read_line(&mut "".to_string())
             .expect("should read line from buffer");
+    }
+
+    fn read_matrix_as<R: FromStr>(&mut self) -> Result<Vec<Vec<R>>, R::Err> {
+        let mut result = Vec::new();
+        for line in self.lines() {
+            if let Ok(line) = line {
+                let elements = line
+                    .trim_matches(|c| c == '[' || c == ']' || c == ',' || c == ' ' || c == '\t')
+                    .split(',')
+                    .map(|s| s.trim_matches(|c| c == '"' || c == ' '))
+                    .map(|s| s.parse::<R>())
+                    .collect::<Result<Vec<R>, R::Err>>()?;
+                result.push(elements);
+            }
+        }
+        Ok(result)
     }
 }
 
@@ -131,5 +149,41 @@ mod tests {
         assert_eq!(v, vec![-1.0, 2.0, -3.0, 4.0, 5.0]);
 
         Ok(())
+    }
+
+    #[test]
+    fn test_read_matrix_as() {
+        let mut cursor = Cursor::new("[[\"5\",\"3\"]\n,[\"6\",\".\"]\n,[\".\",\"9\"]]\n");
+        let mat1 = cursor.read_matrix_as::<String>();
+        assert_eq!(
+            mat1,
+            Ok(vec![
+                vec!["5".into(), "3".into()],
+                vec!["6".into(), ".".into()],
+                vec![".".into(), "9".into()]
+            ])
+        );
+
+        let mut cursor = Cursor::new("[[\"5\",\"3\"],\n [\"6\",\".\"],\n [\".\",\"9\"]]");
+        let mat1 = cursor.read_matrix_as::<String>();
+        assert_eq!(
+            mat1,
+            Ok(vec![
+                vec!["5".into(), "3".into()],
+                vec!["6".into(), ".".into()],
+                vec![".".into(), "9".into()]
+            ])
+        );
+
+        let mut cursor = Cursor::new("\t[[\"5\",\"3\"],\n\t\t[\"6\",\".\"],\n\t\t[\".\",\"9\"]]");
+        let mat1 = cursor.read_matrix_as::<String>();
+        assert_eq!(
+            mat1,
+            Ok(vec![
+                vec!["5".into(), "3".into()],
+                vec!["6".into(), ".".into()],
+                vec![".".into(), "9".into()]
+            ])
+        );
     }
 }
