@@ -85,6 +85,21 @@ impl<T: FromStr> FromStr for Vector<T> {
     }
 }
 
+#[derive(Debug)]
+pub struct Matrix<T: std::fmt::Display>(pub Vec<Vec<T>>);
+
+impl<T: std::fmt::Display> std::fmt::Display for Matrix<T> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        for row in &self.0 {
+            for elem in row.iter() {
+                write!(f, "{:>4}", elem)?;
+            }
+            writeln!(f)?;
+        }
+        Ok(())
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

@@ -11,6 +11,11 @@ if [ ! -d "./$target_dir" ]; then
 	exit 2
 fi
 
+if [ "$1" = "-w" ]; then
+	shift
+	WRITE_OUTPUT=1
+fi
+
 if [ "$1" = "-c" ]; then
 	shift
 	EXTRA_ARGS="--features=count-allocations"
@@ -35,8 +40,12 @@ run_problem() {
 		"$(basename $input_file)" \
 		"$(basename $output_file)" >&2
 
-	cargo run -q $EXTRA_ARGS --bin $problem_name <"$input_file" |
-		tee "$output_file"
+    if [ -n "$WRITE_OUTPUT" ]; then
+        cargo run -q $EXTRA_ARGS --bin $problem_name <"$input_file" |
+            tee "$output_file"
+    else
+        cargo run -q $EXTRA_ARGS --bin $problem_name <"$input_file"
+    fi
 }
 
 if [ "$#" -eq "0" ]; then
