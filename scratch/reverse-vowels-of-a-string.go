@@ -1,5 +1,7 @@
 // https://leetcode.com/problems/reverse-vowels-of-a-string
 
+//go:build ignore
+
 package main
 
 import (

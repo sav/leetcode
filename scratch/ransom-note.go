@@ -1,3 +1,5 @@
+//go:build ignore
+
 package main
 
 func canConstruct(note string, magazine string) bool {

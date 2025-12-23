@@ -1,3 +1,5 @@
+//go:build ignore
+
 package main
 
 func isIsomorphic(s string, t string) bool {
