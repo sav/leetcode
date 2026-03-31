@@ -8,10 +8,23 @@
 
 namespace leetcode {
 
-template <typename T> void print_vector(std::ostream &os, std::vector<T> vec) {
-  os << "[ ";
-  std::copy(vec.begin(), vec.end(), std::ostream_iterator<T>(os, " "));
-  os << "]" << std::endl;
+template<typename T>
+std::vector<T> read_vector(std::istream &is) {
+    std::string line;
+    std::getline(is, line);
+    std::istringstream iss(line);
+    std::vector<T> v;
+    T val;
+    while (iss >> val)
+        v.push_back(val);
+    return v;
+}
+
+template <typename T>
+void print_vector(std::ostream &os, std::vector<T> vec) {
+    os << "[ ";
+	std::copy(vec.begin(), vec.end(), std::ostream_iterator<T>(os, " "));
+	os << "]" << std::endl;
 }
 
 } // namespace leetcode
