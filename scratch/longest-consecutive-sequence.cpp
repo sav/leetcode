@@ -5,8 +5,8 @@
 #include <print>
 #include <sstream>
 #include <string>
-#include <vector>
 #include <unordered_set>
+#include <vector>
 
 class Solution {
     int search(int n, std::unordered_set<int> &map,
@@ -25,6 +25,7 @@ class Solution {
         }
         return acc;
     }
+
   public:
     int longestConsecutive(std::vector<int> &nums) {
         std::unordered_set<int> map(nums.begin(), nums.end()), visited;
