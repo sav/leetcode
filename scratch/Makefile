@@ -6,7 +6,7 @@
 
 CPP := clang++
 
-CXXFLAGS += --std=c++20 -g -O2 -Wall 
+CXXFLAGS += -std=c++23 -fno-inline -g -ggdb3 -Wall
 
 GO := go
 
